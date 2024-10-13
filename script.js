@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = '2d24f1dad8aeaee583f51565'; // Replace with your ExchangeRate-API key
+    const apiKey = '2d24f1dad8aeaee583f51565';
     const amountInput = document.getElementById('amount');
     const fromCurrencySelect = document.getElementById('fromCurrency');
     const toCurrencySelect = document.getElementById('toCurrency');
     const resultDiv = document.getElementById('result');
-    const convertButton = document.getElementById('convertButton');
     const topCurrenciesTableBody = document.querySelector('#topCurrenciesTable tbody');
 
     // Fetch currency options and populate the dropdowns
@@ -30,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Convert currency on button click
-    convertButton.addEventListener('click', function () {
+    // Automatically convert when input or selection changes
+    function autoConvert() {
         const amount = amountInput.value;
         const fromCurrency = fromCurrencySelect.value;
         const toCurrency = toCurrencySelect.value;
@@ -52,7 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             resultDiv.innerHTML = 'Please enter all the details.';
         }
-    });
+    }
+
+    // Add event listeners to trigger live conversion
+    amountInput.addEventListener('input', autoConvert);
+    fromCurrencySelect.addEventListener('change', autoConvert);
+    toCurrencySelect.addEventListener('change', autoConvert);
 
     // Fetch and display top 10 currencies in table
     const topCurrencies = [
