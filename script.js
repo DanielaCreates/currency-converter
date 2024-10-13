@@ -14,6 +14,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 const symbols = data.supported_codes;
                 populateCurrencyOptions(symbols, fromCurrencySelect);
                 populateCurrencyOptions(symbols, toCurrencySelect);
+
+
+                // Set PHP as default in "To" dropdown
+                fromCurrencySelect.value = "PHP";
+
+                // Set USD as default in "From" dropdown
+                toCurrencySelect.value = "USD";
+
+
+                // Perform an initial conversion when the page loads with default values
+                autoConvert();
             } else {
                 resultDiv.innerHTML = 'Error loading currency symbols.';
             }
