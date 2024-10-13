@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiKey = '2d24f1dad8aeaee583f51565';
     const amountInput = document.getElementById('amount');
     const fromCurrencySelect = document.getElementById('fromCurrency');
-    const toCurrencySelect = document.getElementById('toCurrency');
+    const toCurrencyContainer = document.getElementById('toCurrencyContainer');
+    const addCurrencyButton = document.getElementById('addCurrencyButton');
     const resultDiv = document.getElementById('result');
     const topCurrenciesTableBody = document.querySelector('#topCurrenciesTable tbody');
 
@@ -13,17 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.result === 'success') {
                 const symbols = data.supported_codes;
                 populateCurrencyOptions(symbols, fromCurrencySelect);
-                populateCurrencyOptions(symbols, toCurrencySelect);
 
+                // Populate the initial "To" currency dropdown with PHP as default
+                const firstToCurrencySelect = toCurrencyContainer.querySelector('.toCurrencySelect');
+                populateCurrencyOptions(symbols, firstToCurrencySelect);
+                firstToCurrencySelect.value = "USD";
 
-                // Set PHP as default in "To" dropdown
+                // Set USD as default in the "From" dropdown
                 fromCurrencySelect.value = "PHP";
 
-                // Set USD as default in "From" dropdown
-                toCurrencySelect.value = "USD";
-
-
-                // Perform an initial conversion when the page loads with default values
+                // Perform an initial conversion
                 autoConvert();
             } else {
                 resultDiv.innerHTML = 'Error loading currency symbols.';
@@ -44,21 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function autoConvert() {
         const amount = amountInput.value;
         const fromCurrency = fromCurrencySelect.value;
-        const toCurrency = toCurrencySelect.value;
+        const toCurrencySelects = document.querySelectorAll('.toCurrencySelect');
 
-        if (amount && fromCurrency && toCurrency) {
-            fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'success') {
-                        const exchangeRate = data.conversion_rate;
-                        const convertedAmount = (amount * exchangeRate).toFixed(2);
-                        resultDiv.innerHTML = `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
-                        resultDiv.classList.add('show');
-                    } else {
-                        resultDiv.innerHTML = 'Error converting currency.';
-                    }
-                });
+        if (amount && fromCurrency) {
+            resultDiv.innerHTML = ''; // Clear previous results
+
+            toCurrencySelects.forEach(select => {
+                const toCurrency = select.value;
+                if (!toCurrency) return; // Skip if no 'To' currency is selected
+
+                fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === 'success') {
+                            const exchangeRate = data.conversion_rate;
+                            const convertedAmount = (amount * exchangeRate).toFixed(2);
+                            resultDiv.innerHTML += `<p>${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}</p>`;
+                        } else {
+                            resultDiv.innerHTML += `<p>Error converting to ${toCurrency}.</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        resultDiv.innerHTML += `<p>Failed to fetch conversion rate for ${toCurrency}.</p>`;
+                    });
+            });
         } else {
             resultDiv.innerHTML = 'Please enter all the details.';
         }
@@ -67,7 +76,50 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event listeners to trigger live conversion
     amountInput.addEventListener('input', autoConvert);
     fromCurrencySelect.addEventListener('change', autoConvert);
-    toCurrencySelect.addEventListener('change', autoConvert);
+    toCurrencyContainer.addEventListener('change', autoConvert);
+
+    // Function to add a new currency dropdown
+    function addNewCurrencyField() {
+        const newCurrencyDiv = document.createElement('div');
+        newCurrencyDiv.classList.add('form-control');
+
+        const newLabel = document.createElement('label');
+        newLabel.textContent = 'To:';
+        newCurrencyDiv.appendChild(newLabel);
+
+        const newSelect = document.createElement('select');
+        newSelect.classList.add('toCurrencySelect');
+        newCurrencyDiv.appendChild(newSelect);
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.classList.add('removeCurrency');
+        newCurrencyDiv.appendChild(removeButton);
+
+        // Populate options in the new select element
+        fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/codes`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    populateCurrencyOptions(data.supported_codes, newSelect);
+                }
+            });
+
+        // Add event listener to the remove button
+        removeButton.addEventListener('click', function () {
+            newCurrencyDiv.remove();
+            autoConvert(); // Recalculate after removal
+        });
+
+        // Append the new currency selector to the container
+        toCurrencyContainer.appendChild(newCurrencyDiv);
+    }
+
+    // Add functionality to add more currency selectors
+    addCurrencyButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        addNewCurrencyField();
+    });
 
     // Fetch and display top 10 currencies in table
     const topCurrencies = [
@@ -89,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 if (data.result === 'success') {
                     const phpRate = data.conversion_rate;
-                    
+
                     // Fetch USD and EUR equivalent for comparison
                     fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/pair/${currency.symbol}/USD`)
                         .then(response => response.json())

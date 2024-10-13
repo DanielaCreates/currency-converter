@@ -70,9 +70,9 @@ button:hover {
     margin-top: 20px;
     font-size: 20px;
     text-align: center;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
 }
+
 
 .result.show {
     opacity: 1;

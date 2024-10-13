@@ -22,10 +22,16 @@
             <select id="fromCurrency"></select>
         </div>
 
-        <div class="form-control">
-            <label for="toCurrency">To:</label>
-            <select id="toCurrency"></select>
+        <!-- Section to dynamically add multiple "To" currency dropdowns -->
+        <div id="toCurrencyContainer">
+            <div class="form-control">
+                <label for="toCurrency">To:</label>
+                <select class="toCurrencySelect"></select>
+                <button class="removeCurrency" style="display:none;">Remove</button>
+            </div>
         </div>
+
+        <button id="addCurrencyButton">Add Another Currency</button>
 
         <div class="result" id="result"></div>
 
