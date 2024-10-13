@@ -22,7 +22,6 @@
             <select id="fromCurrency"></select>
         </div>
 
-        <!-- Section to dynamically add multiple "To" currency dropdowns -->
         <div id="toCurrencyContainer">
             <div class="form-control">
                 <label for="toCurrency">To:</label>
@@ -32,27 +31,26 @@
         </div>
 
         <button id="addCurrencyButton">Add Another Currency</button>
-
+        <hr>
         <div class="result" id="result"></div>
-
-        <!-- Merged Top Currencies Section -->
-        <h3>Top 10 Currencies to PHP</h3>
-        <table id="topCurrenciesTable">
-            <thead>
-                <tr>
-                    <th>COUNTRY</th>
-                    <th>UNIT</th>
-                    <th>SYMBOL</th>
-                    <th>EURO EQUIVALENT</th>
-                    <th>U.S. DOLLAR EQUIVALENT</th>
-                    <th>PHIL. PESO EQUIVALENT</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Currency rows will be dynamically added here -->
-            </tbody>
-        </table>
     </div>
+    <hr>
+    <h3>Top 10 Currencies to PHP</h3>
+    <table id="topCurrenciesTable">
+        <thead>
+            <tr>
+                <th>COUNTRY</th>
+                <th>UNIT</th>
+                <th>SYMBOL</th>
+                <th>EURO EQUIVALENT</th>
+                <th>U.S. DOLLAR EQUIVALENT</th>
+                <th>PHIL. PESO EQUIVALENT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Currency rows will be dynamically added here -->
+        </tbody>
+    </table>
 
     <script src="script.js"></script>
 </body>
