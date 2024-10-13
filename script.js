@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = '2d24f1dad8aeaee583f51565'; // Replace with your ExchangeRate-API key
+    const apiKey = '2d24f1dad8aeaee583f51565';
     const amountInput = document.getElementById('amount');
     const fromCurrencySelect = document.getElementById('fromCurrency');
     const toCurrencySelect = document.getElementById('toCurrency');
     const resultDiv = document.getElementById('result');
     const convertButton = document.getElementById('convertButton');
 
-    // Fetch currency options and populate the dropdowns
     fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/codes`)
         .then(response => response.json())
         .then(data => {
@@ -23,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function populateCurrencyOptions(symbols, selectElement) {
         symbols.forEach(symbol => {
             const option = document.createElement('option');
-            option.value = symbol[0];  // Currency code
-            option.textContent = `${symbol[0]} - ${symbol[1]}`;  // Currency code and name
+            option.value = symbol[0];
+            option.textContent = `${symbol[0]} - ${symbol[1]}`
             selectElement.appendChild(option);
         });
     }
@@ -43,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const exchangeRate = data.conversion_rate;
                         const convertedAmount = (amount * exchangeRate).toFixed(2);
                         resultDiv.innerHTML = `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
+                        resultDiv.classList.add('show');
                     } else {
                         resultDiv.innerHTML = 'Error converting currency.';
                     }
