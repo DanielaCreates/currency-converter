@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const apiKey = '966a5f4ea7d0346a66e229be'; // Your ExchangeRate API key
     const currentsApiKey = 'clZAZb9PIl_Sm3LAf5k9MUKYqa3bCSjevy0jaU_-XDl2Y4Sv'; // Your CurrentsAPI key
-    const currentsApiUrl = `https://api.currentsapi.services/v1/search?keywords=currency&apiKey=${currentsApiKey}`;
+    const currentsApiUrl = `https://api.currentsapi.services/v1/search?keywords=stock&apiKey=${currentsApiKey}`;
     const amountInput = document.getElementById('amount');
     const fromCurrencySelect = document.getElementById('fromCurrency');
     const toCurrencyContainer = document.getElementById('toCurrencyContainer');
