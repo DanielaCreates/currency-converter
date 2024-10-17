@@ -72,11 +72,6 @@ button:hover {
     opacity: 1;
 }
 
-
-.result.show {
-    opacity: 1;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -99,18 +94,33 @@ tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-@media only screen and (max-width: 600px) {
-    .converter-container {
-        width: 90%;
-        padding: 15px;
-    }
+#currency-news-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
 
-    input, select, button {
-        font-size: 20px;
-        padding: 10px;
-    }
+.news-item h4 {
+    font-size: 18px;
+    color: #333;
+}
 
-    .result {
-        font-size: 18px;
-    }
+.news-item p {
+    font-size: 14px;
+    color: #555;
+}
+
+.news-item a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.news-item a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    border: 1px solid #eee;
 }
